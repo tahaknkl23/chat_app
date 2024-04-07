@@ -1,20 +1,43 @@
+import 'package:chat_app/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../components/my_button.dart';
 import '../components/my_textfield.dart';
 
 class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key, required this.onTap});
+  RegisterPage({Key? key, required this.onTap}) : super(key: key);
 
-// burda email ve password controllerlarını tanımladık
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  //register method
-  void register() {}
 
-  //tap to register
+  final AuthService _auth = AuthService();
+
   final void Function()? onTap;
+
+  void register(BuildContext context) {
+    if (_passwordController.text == _confirmPasswordController.text) {
+      try {
+        _auth.signUpWithEmailAndPassword(_emailController.text, _passwordController.text);
+      } catch (e) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()),
+          ),
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text("Passwords do not match"),
+        ),
+      );
+    }
+  }
+
+  //pasword do not match
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +76,7 @@ class RegisterPage extends StatelessWidget {
           //login button
           MyButton(
             text: 'Register',
-            onTap: register,
+            onTap: () => register(context),
           ),
           const SizedBox(height: 25),
 
