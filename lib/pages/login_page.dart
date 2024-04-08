@@ -1,18 +1,22 @@
 import 'package:chat_app/components/my_button.dart';
 import 'package:chat_app/components/my_textfield.dart';
+import 'package:chat_app/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
 
-import '../auth/auth_service.dart';
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key, required this.onTap});
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key, required this.onTap});
+  final Function()? onTap;
 
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   //email and password controllers
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
-  //tap to go to register page
-  void Function()? onTap;
+  final TextEditingController _passwordController = TextEditingController();
 
 // Login Method
   void login(BuildContext context) async {
@@ -80,7 +84,7 @@ class LoginPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              onTap!();
+              widget.onTap!();
             },
             child: Text("Register now",
                 style: TextStyle(
